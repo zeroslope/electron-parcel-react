@@ -3,7 +3,7 @@
   "description": "weibo analyize",
   "version": "0.1.0",
   "author": "zeroslope <jsx55242@foxmail.com>",
-  "main": "index.js",
+  "main": "main/main.js",
   "build": {
     "appId": "io.zeroslope.weibo",
     "productName": "weibo-analyize",
@@ -24,8 +24,14 @@
     ]
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2"
+  },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "standard": "^12.0.1"
   }
