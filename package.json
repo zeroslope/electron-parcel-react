@@ -4,6 +4,15 @@
   "version": "0.1.0",
   "author": "zeroslope <jsx55242@foxmail.com>",
   "main": "main/main.js",
+  "scripts": {
+    "render:start": "parcel renderer/index.html --no-cache --out-dir=renderer/dist",
+    "render:build": "cross-env NODE_ENV=production parcel build renderer/index.html --out-dir=app/ --public-url ./ --target electron",
+    "electron:start": "nodemon --watch main/ --exec \"electron .\"",
+    "clean": "rm -rf .cache/ app/ render/dist/",
+    "start": "concurrently \"yarn render:start\" \"wait-on http://localhost:1234 && yarn electron:start\"",
+    "build": "yarn clean && yarn render:builde && lectron-builder --mac --x64",
+    "postinstall": "electron-builder install-app-deps"
+  },
   "build": {
     "appId": "io.zeroslope.weibo",
     "productName": "weibo-analyize",
@@ -12,6 +21,10 @@
       "output": "dist",
       "buildResources": "resources"
     },
+    "files": [
+      "main/main.js",
+      "app/*"
+    ],
     "publish": null
   },
   "standard": {
@@ -25,6 +38,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "app-root-path": "^2.1.0",
+    "cross-env": "^5.2.0",
+    "electron-is-dev": "^1.0.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2"
   },
@@ -33,6 +49,13 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
-    "standard": "^12.0.1"
+    "concurrently": "^4.1.0",
+    "electron": "^4.0.5",
+    "electron-builder": "^20.38.5",
+    "standard": "^12.0.1",
+    "wait-on": "^3.2.0"
+  },
+  "browser": {
+    "fs": false
   }
 }

@@ -72,4 +72,10 @@ yarn-error.log
 
 .vscode/
 
+renderer/dist/
+
+# render build file
+app/
+
+# result
 dist/
