@@ -8,7 +8,7 @@
     "render:start": "parcel renderer/index.html --no-cache --out-dir=renderer/dist",
     "render:build": "cross-env NODE_ENV=production parcel build renderer/index.html --out-dir=app/ --public-url ./ --target electron",
     "electron:start": "nodemon --watch main/ --exec \"electron .\"",
-    "clean": "rm -rf .cache/ app/ render/dist/",
+    "clean": "rm -rf .cache/ app/ render/dist/ dist/",
     "start": "concurrently \"yarn render:start\" \"wait-on http://localhost:1234 && yarn electron:start\"",
     "build": "yarn clean && yarn render:builde && lectron-builder --mac --x64",
     "postinstall": "electron-builder install-app-deps"
