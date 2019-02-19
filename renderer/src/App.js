@@ -1,11 +1,17 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import SearchPage from './pages/SearchPage'
 
-const App = () => (
-  <Switch>
-    <Route path='/' exact component={SearchPage} />
-  </Switch>
-)
+import Home from './pages/home'
+import Record from './pages/record'
+import Setting from './pages/setting'
 
-export default App
+export default () => {
+  return (
+    <Switch>
+      <Route exact path='/' component={Home} />
+      <Route exact path='/record' component={Record} />
+      <Route exact path='/setting' component={Setting} />
+      <Route component={() => <h1>204 No Content</h1>} />
+    </Switch>
+  )
+}
