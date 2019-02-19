@@ -79,3 +79,5 @@ app/
 
 # result
 dist/
+
+main/build

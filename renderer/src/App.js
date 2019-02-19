@@ -1,9 +1,11 @@
 import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import SearchPage from './pages/SearchPage'
 
 const App = () => (
-  <div>
-    <h1>Hello World!</h1>
-  </div>
+  <Switch>
+    <Route path='/' exact component={SearchPage} />
+  </Switch>
 )
 
 export default App

@@ -6,11 +6,13 @@
   "main": "main/main.js",
   "scripts": {
     "render:start": "parcel renderer/index.html --no-cache --out-dir=renderer/dist",
-    "render:build": "cross-env NODE_ENV=production parcel build renderer/index.html --out-dir=app/ --public-url ./ --target electron",
+    "render:build": "cross-env NODE_ENV=production parcel build ./renderer/index.html --out-dir=app/ --public-url ./",
     "electron:start": "nodemon --watch main/ --exec \"electron .\"",
     "clean": "rm -rf .cache/ app/ render/dist/ dist/",
     "start": "concurrently \"yarn render:start\" \"wait-on http://localhost:1234 && yarn electron:start\"",
-    "build": "yarn clean && yarn render:builde && lectron-builder --mac --x64",
+    "testprod": "yarn render:build && cross-env NODE_ENV=production yarn electron:start",
+    "dist": "electron-builder --mac --x64",
+    "build": "yarn clean && yarn render:build && yarn dist",
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
@@ -21,10 +23,6 @@
       "output": "dist",
       "buildResources": "resources"
     },
-    "files": [
-      "main/main.js",
-      "app/*"
-    ],
     "publish": null
   },
   "standard": {
@@ -38,24 +36,30 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@emotion/core": "^10.0.7",
+    "antd": "^3.13.3",
     "app-root-path": "^2.1.0",
     "cross-env": "^5.2.0",
     "electron-is-dev": "^1.0.1",
     "react": "^16.8.2",
-    "react-dom": "^16.8.2"
+    "react-dom": "^16.8.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "tachyons": "^4.11.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.3.3",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-import": "^1.11.0",
     "concurrently": "^4.1.0",
+    "cssnano": "^4.1.10",
     "electron": "^4.0.5",
     "electron-builder": "^20.38.5",
+    "less": "2.7.2",
     "standard": "^12.0.1",
     "wait-on": "^3.2.0"
-  },
-  "browser": {
-    "fs": false
   }
 }

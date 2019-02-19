@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 
+const path = require('path')
 const { format } = require('url')
 const { resolve } = require('app-root-path')
 const isDev = require('electron-is-dev')
@@ -13,7 +14,17 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      javascript: true,
+      plugins: true,
+      nodeIntegration: true,
+      webSecurity: false,
+      preload: path.join(__dirname, 'preload.js')
+    }
+  })
 
   const devPath = 'http://localhost:1234'
 
@@ -23,7 +34,11 @@ function createWindow () {
     slashes: true
   })
 
-  const url = isDev ? devPath : prodPath
+  // console.log(process.env.NODE_ENV)
+
+  let isDevEnv = isDev && process.env.NODE_ENV !== 'production'
+
+  const url = isDevEnv ? devPath : prodPath
 
   console.log(url)
 
@@ -33,7 +48,8 @@ function createWindow () {
   console.log('hello')
 
   // Open the DevTools.
-  if (isDev) mainWindow.webContents.openDevTools()
+  // if (isDev)
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

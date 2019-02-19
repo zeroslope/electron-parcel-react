@@ -1,0 +1,26 @@
+@import "~antd/dist/antd.less";
+
+@text-color: fade(@white, 95%);
+@component-background: rgba(128, 128, 128, 0.95);
+@input-bg: rgba(128, 128, 128, 0.8);
+@switch-color: #00CF7E;
+
+@background-color-light: rgba(0, 0, 0, 0.95); // background of header and selected item
+@item-active-bg: rgba(64, 64, 64, 0.95);
+@item-hover-bg: rgba(64, 64, 64, 0.95);
+
+// menu
+@menu-collapsed-width: 64px;
+
+
+.ant-input,.ant-input-number,.ant-input-number-handler-wrap,.ant-select-selection {
+  border: 0;
+}
+
+.ant-switch {
+  background-color: #F34545;
+  &-loading-icon,
+  &:after {
+    background-color: @white;
+  }
+}
