@@ -1,5 +1,17 @@
 @import "../../../node_modules/antd/dist/antd.less";
 
+.ant-input,.ant-input-number,.ant-input-number-handler-wrap,.ant-select-selection {
+  border: 0;
+}
+
+.ant-switch {
+  // background-color: #F34545;
+  &-loading-icon,
+  &:after {
+    background-color: @white;
+  }
+}
+
 @text-color: fade(@white, 95%);
 @component-background: rgba(128, 128, 128, 0.95);
 @input-bg: rgba(128, 128, 128, 0.8);
@@ -11,16 +23,3 @@
 
 // menu
 @menu-collapsed-width: 64px;
-
-
-.ant-input,.ant-input-number,.ant-input-number-handler-wrap,.ant-select-selection {
-  border: 0;
-}
-
-.ant-switch {
-  background-color: #F34545;
-  &-loading-icon,
-  &:after {
-    background-color: @white;
-  }
-}

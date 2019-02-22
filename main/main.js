@@ -1,28 +1,74 @@
-const { app, BrowserWindow } = require('electron')
-
-const path = require('path')
+const { exec } = require('child_process')
+const { join } = require('path')
 const { format } = require('url')
 const { resolve } = require('app-root-path')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const isDev = require('electron-is-dev')
 
 // const path = require('path')
 // const url = require('url')
 
+ipcMain.on('search-by-keyword', (event, arg) => {
+  const { type, keyWord, searchOption, pageNumber, isNeedImage } = arg
+  const cmd = `scrapy crawl weibo -a line=${type},${keyWord},${searchOption},${pageNumber},${isNeedImage ? 'True' : 'False'}@_@`
+  // console.log(cmd)
+  event.sender.send('search-by-keyword', cmd)
+  let venv = join(process.cwd(), '../venv/bin/activate')
+  // console.log(venv)
+  exec(`source ${venv} && cd ../weibo_scrapy && ${cmd}`, function (err, stdout, stderr) {
+    // console.log(stdout)
+    event.sender.send('search-by-keyword', stdout.length)
+    if (err) {
+      console.info('stderr : ' + stderr)
+    }
+  })
+})
+
+ipcMain.on('search-by-user', (event, arg) => {
+  const { type, username, userId, pageNumber, isNeedImage } = arg
+  const cmd = `scrapy crawl weibo -a line=${type},${username},${userId},${pageNumber},${isNeedImage ? 'True' : 'False'}@_@`
+  // event.sender.send('search-by-user', cmd)
+  let venv = join(process.cwd(), '../venv/bin/activate')
+  exec(`source ${venv} && cd ../weibo_scrapy && ${cmd}`, function (err, stdout, stderr) {
+    console.log(stdout)
+    event.sender.send('search-by-user', stdout.length)
+    if (err) {
+      console.info('stderr : ' + stderr)
+    }
+  })
+})
+
+ipcMain.on('change-proxy', (event, arg) => {
+  const { certificate, password } = arg
+  const cmd = `python modify_proxy.py ${certificate} ${password}`
+  let venv = join(process.cwd(), '../venv/bin/activate')
+  exec(`source ${venv} && cd ../weibo_scrapy && ${cmd}`, function (err, stdout, stderr) {
+    console.log(stdout)
+    event.sender.send('search-by-user', stdout.length)
+    if (err) {
+      console.info('stderr : ' + stderr)
+    }
+  })
+})
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+const createWindow = () => {
+  const { screen } = require('electron')
+  const { bounds } = screen.getPrimaryDisplay()
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: bounds.width * 0.8,
+    height: bounds.height * 0.8,
     webPreferences: {
       javascript: true,
       plugins: true,
       nodeIntegration: true,
       webSecurity: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: join(__dirname, 'preload.js')
     }
   })
 

@@ -7,6 +7,7 @@ const Text = ({ children }) => (
 )
 
 class Setting extends Component {
+  ipcRenderer = window.electron.ipcRenderer || false
   state = {
     certificate: '',
     password: '',
@@ -22,15 +23,31 @@ class Setting extends Component {
       password,
       isDisabled: (!!certificate && !!password)
     })
+    if (this.ipcRenderer) {
+      this.ipcRenderer.on('search-by-user', (event, data) => {
+        window.alert(data)
+      })
+    }
+  }
+
+  componentWillUnmount () {
+    if (this.ipcRenderer) {
+      this.ipcRenderer.removeAllListeners('search-by-user')
+    }
   }
 
   handleChange = e => this.setState({ [e.target.name]: e.target.value })
 
-  handleSubmit = () => {}
-
   save = () => {
-    window.localStorage.certificate = this.state.certificate
-    window.localStorage.password = this.state.password
+    if (this.ipcRenderer) {
+      window.localStorage.certificate = this.state.certificate
+      window.localStorage.password = this.state.password
+      const { certificate, password } = this.state
+      this.ipcRenderer.send('change-proxy', {
+        certificate,
+        password
+      })
+    }
     this.setState({ isDisabled: true })
   }
 
